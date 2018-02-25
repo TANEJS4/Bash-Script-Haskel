@@ -41,7 +41,7 @@ if [ $n = "yes" ] ; then
 elseif [ $n = "no" ]
         break
 else
-    	echo "Pl enter yes / no ONLY ... Press enter to continue"
+    	echo "Please enter yes / no ONLY"
         read phew
 fi
 done
