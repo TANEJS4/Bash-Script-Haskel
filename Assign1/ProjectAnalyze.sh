@@ -1,30 +1,48 @@
 #!/bin/bash
 # part1
-local=(git rev-parse master)  #gives an output
-remote=(git rev-parse remote/master)  #gives an output
-if [ $local == $remote ] 
-then
-    echo "Local Repository is up to date with Remote Repository"
-else
-    echo "Local Repository is not up to date with Remote Repository"
-fi
-
+function checkstatus()
+{
+git fetch origin 
+echo $(git status)
+}
 
 a1=(git fetch origin)
 
 #part 2
-
+function redirectChanges()
+{
 git diff $a1 >> changes.log
 
-
+}
 #part 3
-
+function todo()
+{
 grep -r --exclude=todo.log "#TODO" $1 >> todo.log 
 
-
+}
 #part 4
-
+function errors()
+{
 
 ghc -fno-code *.hs $1 &>> error.log  
-
+}
 #part 5
+function feature()
+{
+while true
+do
+echo "Enter yes / no "
+read n
+if [ $n = "yes" ] ; then
+        git pull
+        git status
+        git diff HEAD
+        break
+elseif [ $n = "no" ]
+        break
+else
+    	echo "Pl enter yes / no ONLY ... Press enter to continue"
+        read phew
+fi
+done
+}
