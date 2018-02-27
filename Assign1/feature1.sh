@@ -6,7 +6,8 @@ echo "Enter yes / no "
 read n
 if [ $n = "yes" ] ; then
 	git pull
-	
+	git status
+	git diff HEAD
 	break
 elseif [ $n = "no" ]
 	break

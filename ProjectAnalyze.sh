@@ -1,8 +1,9 @@
+
 #!/bin/bash
 # part1
 function checkstatus()
 {
-git fetch origin 
+git fetch origin
 echo $(git status)
 }
 
@@ -17,14 +18,14 @@ git diff $a1 >> changes.log
 #part 3
 function todo()
 {
-grep -r --exclude=todo.log "#TODO" $1 >> todo.log 
+grep -r --exclude=todo.log "#TODO" $1 >> todo.log
 
 }
 #part 4
 function errors()
 {
 
-ghc -fno-code *.hs $1 &>> error.log  
+ghc -fno-code *.hs $1 &>> error.log
 }
 #part 5
 function feature()
@@ -46,3 +47,7 @@ else
 fi
 done
 }
+
+
+
+
