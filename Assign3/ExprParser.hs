@@ -1,4 +1,14 @@
-module ExprParser (parseExprD,parseExprF) where
+{-|
+Module      : ExprParser
+Description : Contains a typeclass and instances for parsing expressions
+Copyright   : (c) Shivam Taneja @ 2018
+License     : WTFPL
+Maintainer  : github.com/Tanejs4
+Stability   : experimental
+Portability : POSIX
+
+-}
+ module ExprParser (parseExprD,parseExprF) where
 
 import ExprType
 import Text.Parsec
@@ -6,35 +16,25 @@ import Text.Parsec.String
 import ExprPretty
 
 
-{-
-  Class diffExpr:
-  Expression Parser
-  Description : Contains a type class and instances for
-  parsing the expressions.
-
-  License : WTFPL
-  Maintainer : Tanejs4@mcmaster.ca
-  Stability : experimental
 
 
-
--}
-{-
-
--}
-
+-- | main parser for doubles
 parseExprD :: String -> Expr Double
 parseExprD ss = case parse exprD "" ss of
                   Left err -> error $ show err
                   Right expr -> expr
+
+-- | main parser for floats
 
 parseExprF :: String -> Expr Float
 parseExprF ss = case parse exprF "" ss of
                   Left err -> error $ show err
                   Right expr -> expr
 
+-- | parses the different types of doubles
 exprD :: Parser (Expr Double)
 exprD = exprVar <|> exprConstD <|> exprTrigD <|> exprOpD
+-- | parses the different types of floats
 
 exprF :: Parser (Expr Float)
 exprF = exprVar <|> exprConstF <|> exprTrigF <|> exprOpF
@@ -42,17 +42,9 @@ exprF = exprVar <|> exprConstF <|> exprTrigF <|> exprOpF
 
 
 
-{-
-
-  exprExpD is a function which deals with the parsing
-  of exponential functions and nearby entities.
-  More specifically, it is able to parse:
-    - Natural Exponential (e)
-    - Natural Logarithm   (ln)
-    - Logarithm           (log)
--}
 
 
+-- | The parser either adds or multiply doubles
 
 exprOpD :: Parser (Expr Double)
 exprOpD = do {
@@ -72,6 +64,7 @@ exprOpD = do {
                 else -- The only other option is to return "Mult", since it wasn't "Add"
                   return (Mult ss ss');
               }
+-- | The parser has an option to either return the cosine operator or the sine operator for doubles
 
 exprTrigD :: Parser (Expr Double)
 exprTrigD = do {
@@ -84,16 +77,9 @@ exprTrigD = do {
                  return (Sin ss);
              }
 
-{-
 
-  exprExpD is a function which deals with the parsing
-  of exponential functions and nearby entities.
-  More specifically, it is able to parse:
-    - Natural Exponential (e)
-    - Natural Logarithm   (ln)
-    - Logarithm           (log)
--}
 
+-- | Takes in string const and returns expr type const for doubles
 
 exprConstD :: Parser (Expr Double)
 exprConstD = do {
@@ -103,15 +89,8 @@ exprConstD = do {
              }
 
 
-{-
 
-  exprTrigD is a function which deals with the parsing
-  of trigonometic functions.
-  More specifically, it is able to parse:
-    - Sine   (Sin)
-    - Cosine (Cos)
--}
-
+-- | The parser either adds or multiply float
 
 exprOpF :: Parser (Expr Float)
 exprOpF = do {
@@ -127,6 +106,7 @@ exprOpF = do {
                 else -- The only other option is to return "Mult", since it wasn't "Add"
                   return (Mult ss ss')
               }
+-- | The parser has an option to either return the cosine operator or the sine operator for floats
 
 exprTrigF :: Parser (Expr Float)
 exprTrigF = do {
@@ -139,16 +119,9 @@ exprTrigF = do {
                  return (Sin ss);
              }
 
-{-
-------------------------------------------------------------------------------------------------
 
-  exprExpD is a function which deals with the parsing of exponential functions and nearby entities. More specifically, it is able to parse:
-    - Natural Exponential (e)
-    - Natural Logarithm   (ln)
 
-------------------------------------------------------------------------------------------------
--}
-
+-- | Takes in string const and returns expr type const for float
 
 exprConstF :: Parser (Expr Float)
 exprConstF = do {
@@ -159,7 +132,7 @@ exprConstF = do {
 
 
 
-
+-- | encoding a variable to expr type
 
 exprVar :: Parser (Expr a) -- Abstracted and available for use whether for float values or double
 exprVar = do {
@@ -169,8 +142,9 @@ exprVar = do {
              }
 
 
-{- Utility Parsers and Combinators
+-- * Utility parsers and combinators
 
+{-
 	parens: Adds Parenthesis with the expression
 
 	negDigits: to parse negetive numbers

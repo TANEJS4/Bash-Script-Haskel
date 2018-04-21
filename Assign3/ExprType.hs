@@ -1,3 +1,12 @@
+{-|
+Module      : ExprDiff
+Description : Contains a data type and all fields
+Copyright   : (c) Shivam Taneja @ 2018
+License     : WTFPL
+Maintainer  : github.com/TanejS
+Stability   : experimental
+Portability : POSIX
+-}
 module ExprType where
 
 import Data.List
@@ -5,12 +14,6 @@ import Data.List
 {-
 
 
-  Module ExprType
-  Expression Types
-  Description : Contains a type types and methods.
-  License : WTFPL
-  Maintainer : Tanejs4@mcmaster.ca
-  Stability : experimental
 
   Expression Datatype
   -------------------
@@ -22,22 +25,23 @@ import Data.List
     Var - string identifier for variables
 -}
 
+-- * Data Type: Expr
+-- | makes a data type that contains all operators needed in assignment
 
-data Expr a = Add (Expr a) (Expr a)
-            | Mult (Expr a) (Expr a)
+data Expr a = Add (Expr a) (Expr a) -- ^ addition operator of type Expr
+            | Mult (Expr a) (Expr a) -- ^ multiply operator of type Expr
             | Cos (Expr a) -- ^ This constructor represents the cosine of an expression of type 'Expr a'
             | Sin (Expr a) -- ^ This constructor represents the sin of an expression of type 'Expr a'
             | Exp (Expr a) (Expr a) -- ^ This constructor represents the exponent of two expressions of type 'Expr a'. First expression to the power of second expression.
             | NatExp (Expr a) -- ^ This constructor represents the Natural exponent of an expression of type 'Expr a'
             | Ln (Expr a) -- ^  This constructor represents the Natural Logarithm of an expression of type 'Expr a'
-            | Const a
-            | Var String
+            | Const a -- ^ wraps a constant
+            | Var String   -- ^ wraps a variable
   deriving Eq
 
-{-
-	getVars:
-		Function that retrives variable indifiers from an Expr
--}
+  -- ** getVars
+  -- | Encoding the expression types into a list of strings that can be evaluated
+
 
 getVars :: Expr a -> [String]
 getVars (Add e1 e2)  = getVars e1 `union` getVars e2

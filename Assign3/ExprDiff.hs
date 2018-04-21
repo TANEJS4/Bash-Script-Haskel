@@ -1,19 +1,21 @@
 {-# LANGUAGE FlexibleInstances    #-}
 {-# LANGUAGE UndecidableInstances #-}
+
+{-|
+Module      : ExprDiff
+Description : Partial differentiation and simplifies expressions
+Copyright   : (c) Shivam Taneja @ 2018
+License     : WTFPL
+Maintainer  : github.com/Tanejs4
+Stability   : experimental
+Portability : POSIX
+-}
 module ExprDiff where
 
 import ExprType
 
 import qualified Data.Map as Map
 {-
-  Class diffExpr:
-    Differentiable Expressions
-  Description : Contains a type class and instances for
-  differentiable expressions
-
-  License : WTFPL
-  Maintainer : Tanejs4@mcmaster.ca
-  Stability : experimental
 
   ----------------------------------------------
 
@@ -44,7 +46,7 @@ import qualified Data.Map as Map
                      constructors that perform
                      additional simplification
 -}
-
+-- * core functions
 class DiffExpr a where
   eval :: Map.Map String a -> Expr a -> a
   simplify :: Map.Map String a -> Expr a -> Expr a
@@ -82,7 +84,7 @@ class DiffExpr a where
   var a = Var a
 
 
-
+-- ** instance of DiffExpr
 instance (Num a, Eq a, Fractional a, Floating a, Ord a, Show a, RealFrac a) => DiffExpr a where
   eval vrs (Add e1 e2)  = eval vrs e1 + eval vrs e2
   eval vrs (Mult e1 e2) = eval vrs e1 * eval vrs e2
