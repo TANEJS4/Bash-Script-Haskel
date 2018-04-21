@@ -120,11 +120,7 @@ exprOpF = do {
                 ss' <- between (symbol "(") (symbol ")") (exprVar <|> exprConstF <|> exprOpF);
 
                 {-
-                  This parser can only have the option of
-                  Adding or Multiplying, so it's necessary
-                  to check whether the initial input was
-                  "Add" or "Mult", and return the correct
-                  result accordingly
+                  This parser can only have the option of Adding or Multiplying, so it's necessary to check whether the initial input was "Add" or "Mult", and return the correct result accordingly
                 -}
                 if s == "Add" then
                   return (Add ss ss'); -- Initial s is "Add", return Add
@@ -144,10 +140,13 @@ exprTrigF = do {
              }
 
 {-
+------------------------------------------------------------------------------------------------
 
   exprExpD is a function which deals with the parsing of exponential functions and nearby entities. More specifically, it is able to parse:
     - Natural Exponential (e)
     - Natural Logarithm   (ln)
+
+------------------------------------------------------------------------------------------------
 -}
 
 

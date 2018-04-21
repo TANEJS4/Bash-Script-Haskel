@@ -83,13 +83,14 @@ class DiffExpr a where
 
 
 
-instance (Eq a, Floating a) => DiffExpr a where
+instance (Num a, Eq a, Fractional a, Floating a, Ord a, Show a, RealFrac a) => DiffExpr a where
   eval vrs (Add e1 e2)  = eval vrs e1 + eval vrs e2
   eval vrs (Mult e1 e2) = eval vrs e1 * eval vrs e2
   eval vrs (Exp e1 e2) = eval vrs e1 ** eval vrs e2
   eval vrs (Cos a) =  cos (eval vrs a)
   eval vrs (Sin a) = sin (eval vrs a)
   eval vrs (NatExp a) = exp (eval vrs a)
+  eval vrs (Ln x) = if eval vrs x > 0 then log(eval vrs x) else error "Log is undefined on this domain!"
 
   eval vrs (Const a) =a
   eval vrs (Var a) = case Map.lookup a vrs of
@@ -109,15 +110,23 @@ instance (Eq a, Floating a) => DiffExpr a where
   partDiff t (NatExp a) = Mult (NatExp a) (partDiff t a)
 
 
+
+
+
+
+
   simplify vrs (Const a) = Const a
   simplify vrs (Mult (Const 0) e1) = Const 0
   simplify vrs (Mult e1 (Const 0)) = Const 0
   simplify vrs (Mult e1 (Const 1)) = simplify vrs e1
-  simplify vrs (Mult (Const 1) e1) =simplify vrs e1
+  simplify vrs (Mult (Const 1) e1) = simplify vrs e1
   simplify vrs (Add e1 (Const 0)) = simplify vrs e1
   simplify vrs (Add (Const 0) e1) = simplify vrs e1
   simplify vrs (Exp (e1) (Const 0)) = Const 1
   simplify vrs (Exp (Const 0) e1) = Const 0
+  simplify vrs (Ln (Const a)) = if a > 0 then (Const (log(a))) else error "Log is undefined on this domain!"
+  simplify vrs (Ln (Var a)) = (Ln (Var a))
+  simplify vrs (Ln a) = (Ln (simplify vrs a))
 
 
   simplify vrs (Var a) = case Map.lookup a vrs of
